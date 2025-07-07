@@ -40,15 +40,41 @@ public class Avaliacao implements Moderacao, Comparable<Avaliacao> {
         return status;
     }
     
-    public String getTexto() { return texto; }
-    public void setTexto(String texto) { this.texto = texto; }
-    public LocalDate getData() { return data; }
-    public void setData(LocalDate data) { this.data = data; }
-    public Usuario getAutor() { return autor; }
-    public void setAutor(Usuario autor) { this.autor = autor; }
-    public Produto getProdutoAvaliado() { return produtoAvaliado; }
-    public void setProdutoAvaliado(Produto produtoAvaliado) { this.produtoAvaliado = produtoAvaliado; }
-    public void setStatus(StatusAvaliacao status) { this.status = status; }
+    public String getTexto() { 
+        return texto; 
+    }
+
+    public void setTexto(String texto) { 
+        this.texto = texto; 
+    }
+
+    public LocalDate getData() { 
+        return data; 
+    }
+
+    public void setData(LocalDate data) { 
+        this.data = data; 
+    }
+
+    public Usuario getAutor() { 
+        return autor; 
+    }
+
+    public void setAutor(Usuario autor) { 
+        this.autor = autor; 
+    }
+
+    public Produto getProdutoAvaliado() { 
+        return produtoAvaliado; 
+    }
+
+    public void setProdutoAvaliado(Produto produtoAvaliado) { 
+        this.produtoAvaliado = produtoAvaliado; 
+    }
+
+    public void setStatus(StatusAvaliacao status) { 
+        this.status = status; 
+    }
 
     @Override
     public void aprovar() {
