@@ -1,6 +1,3 @@
-/**
- * 
- */
 package modelos;
 
 import java.util.ArrayList;
@@ -9,24 +6,14 @@ import java.util.List;
 import java.util.Objects;
 
 import enums.StatusAvaliacao;
-
-/**
- * 
- */
 public abstract class Produto implements Comparable<Produto> {
     protected String nome;
     protected String marca;
     protected List<Avaliacao> avaliacoes = new ArrayList<>();
 
     public Produto() {
-
     }
 
-    /**
-     * @param nome
-     * @param marca
-     * @param avaliacoes
-     */
     public Produto(String nome, String marca) {
         this.nome = nome;
         this.marca = marca;
