@@ -1,130 +1,178 @@
 package main;
 
-import modelos.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import modelos.Avaliacao;
+import modelos.Celular;
+import modelos.Notebook;
+import modelos.Plataforma;
+import modelos.Usuario;
+import modelos.Produto;
 
 import interfaces.Moderacao;
+import enums.StatusUsuario;
+
+import java.util.*;
 
 public class MainInterativa {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner teclado = new Scanner(System.in);
         Plataforma plataforma = new Plataforma();
+        List<Usuario> todosOsUsuarios = new ArrayList<>();
+        Usuario usuarioLogado = null;
 
-        System.out.print("Nome do usuário: ");
-        String nome = sc.nextLine();
-        System.out.print("Email do usuário: ");
-        String email = sc.nextLine();
+        Usuario admin = new Usuario("Admin", "admin@email.com");
+        admin.aprovar();
+        todosOsUsuarios.add(admin);
+        plataforma.adicionarUsuario(admin);
 
-        Usuario usuario = new Usuario(nome, email);
-        usuario.aprovar();
-        plataforma.adicionarUsuario(usuario);
-
-        List<Usuario> usuarios = new ArrayList<>();
-        Usuario usuarioAtual = null;
 
         while (true) {
-            System.out.println("\nMenu:");
-            System.out.println("1. Adicionar Produto");
-            System.out.println("2. Avaliar Produto");
-            System.out.println("3. Listar Produtos Ordenados");
-            System.out.println("4. Ver Pendências de Moderação");
-            System.out.println("5. Adicionar outro usuario");
+            System.out.println("\n--- Menu Principal ---");
+            if (usuarioLogado != null) {
+                System.out.println("Logado como: " + usuarioLogado.getNome() + " (" + usuarioLogado.getEmail() + ")");
+            }
+            System.out.println("1. Criar ou Logar com Usuário");
+            System.out.println("2. Adicionar Produto");
+            System.out.println("3. Avaliar Produto");
+            System.out.println("4. Listar Produtos");
+            System.out.println("5. Ver e Gerenciar Pendências de Moderação");
             System.out.println("0. Sair");
-            System.out.print("Escolha: ");
+            System.out.print("Escolha uma opção: ");
 
-            int opcao = Integer.parseInt(sc.nextLine());
+            int opcao = Integer.parseInt(teclado.nextLine());
 
             switch (opcao) {
-                case 1: {
-                    System.out.print("Tipo (1-Celular, 2-Notebook): ");
-                    int tipo = Integer.parseInt(sc.nextLine());
-                    System.out.print("Nome: ");
-                    String nomeP = sc.nextLine();
-                    System.out.print("Marca: ");
-                    String marca = sc.nextLine();
+                case 1:
+                    System.out.print("Digite seu email: ");
+                    String email = teclado.nextLine();
+                    
+                    final String userEmail = email;
+                    usuarioLogado = todosOsUsuarios.stream().filter(u -> u.getEmail().equalsIgnoreCase(userEmail)).findFirst().orElse(null);
+
+                    if (usuarioLogado == null) {
+                        System.out.print("Email não encontrado. Digite seu nome para se cadastrar: ");
+                        String nome = teclado.nextLine();
+                        usuarioLogado = new Usuario(nome, email);
+                        todosOsUsuarios.add(usuarioLogado);
+                        plataforma.adicionarUsuario(usuarioLogado);
+                        System.out.println("Novo usuário cadastrado! Seu acesso está pendente de aprovação.");
+                    } else {
+                        System.out.println("Login realizado com sucesso! Bem-vindo(a) " + usuarioLogado.getNome());
+                    }
+                    break;
+
+                case 2:
+                    if (usuarioLogado == null) {
+                        System.out.println("Você precisa estar logado para adicionar um produto.");
+                        break;
+                    }
+                    System.out.print("Tipo do Produto (1-Celular, 2-Notebook): ");
+                    int tipo = Integer.parseInt(teclado.nextLine());
+                    System.out.print("Nome do Produto: ");
+                    String nomeP = teclado.nextLine();
+                    System.out.print("Marca do Produto: ");
+                    String marca = teclado.nextLine();
 
                     if (tipo == 1) {
-                        System.out.print("RAM (GB): ");
-                        int ram = Integer.parseInt(sc.nextLine());
+                        System.out.print("Memória RAM (GB): ");
+                        int ram = Integer.parseInt(teclado.nextLine());
                         System.out.print("Armazenamento (GB): ");
-                        int armazenamento = Integer.parseInt(sc.nextLine());
+                        int armazenamento = Integer.parseInt(teclado.nextLine());
                         plataforma.adicionarProduto(new Celular(nomeP, marca, ram, armazenamento));
-                    } else {
+                    } else if (tipo == 2) {
                         System.out.print("Processador: ");
-                        String proc = sc.nextLine();
-                        System.out.print("Tamanho da tela: ");
-                        double tela = Double.parseDouble(sc.nextLine());
-
-                        // Correção: Incluir lista de avaliações (null) no construtor
+                        String proc = teclado.nextLine();
+                        System.out.print("Tamanho da tela (polegadas): ");
+                        double tela = Double.parseDouble(teclado.nextLine());
                         plataforma.adicionarProduto(new Notebook(nomeP, marca, proc, tela));
+                    } else {
+                        System.out.println("Tipo de produto inválido.");
                     }
-                    System.out.println("Produto adicionado com sucesso!");
-                }
+                    break;
+                
+                case 3:
+                    if (usuarioLogado == null) {
+                        System.out.println("Você precisa estar logado para avaliar um produto.");
+                        break;
+                    }
 
-                case 2: {
-                    System.out.print("Nome do produto: ");
-                    String nomeProduto = sc.nextLine();
-                    Produto produto = plataforma.buscarProdutoPorNome(nomeProduto);
-                    if (produto == null) {
+                    if(usuarioLogado.getStatus() != StatusUsuario.ATIVO){
+                        System.out.println("Seu usuário não está ativo. Você não pode avaliar produtos.");
+                        break;
+                    }
+
+                    System.out.print("Nome do produto que deseja avaliar: ");
+                    String nomeProduto = teclado.nextLine();
+                    Produto produtoParaAvaliar = plataforma.buscarProdutoPorNome(nomeProduto);
+
+                    if (produtoParaAvaliar == null) {
                         System.out.println("Produto não encontrado.");
                         break;
                     }
 
                     System.out.print("Nota (1 a 5): ");
-                    int nota = Integer.parseInt(sc.nextLine());
+                    int nota = Integer.parseInt(teclado.nextLine());
                     System.out.print("Comentário: ");
-                    String comentario = sc.nextLine();
+                    String comentario = teclado.nextLine();
 
-                    try {
-                        usuario.avaliarProduto(produto, nota, comentario);
-                        System.out.println("Avaliação enviada!");
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Erro: " + e.getMessage());
-                    }
-                }
-
-                case 3: {
+                    usuarioLogado.avaliarProduto(produtoParaAvaliar, nota, comentario);
+                    System.out.println("Avaliação enviada para moderação!");
+                    break;
+                
+                case 4:
+                    System.out.println("\n--- Lista de Produtos ---");
                     plataforma.listarProdutosOrdenadosPorNome();
-                }
+                    break;
 
-                case 4: {
-                    List<Moderacao> pendencias = plataforma.listarPendenciasDeModeracao();
-                    System.out.println("\nItens pendentes de moderação: " + pendencias.size());
-                    pendencias.forEach(p -> System.out.println(p.getClass().getSimpleName()));
-                }
-
-                case 5: {
-                    System.out.print("Nome do usuário: ");
-                    String nome1 = sc.nextLine();
-                    System.out.print("Email do usuário: ");
-                    String email1 = sc.nextLine();
-
-                    usuarioAtual = usuarios.stream()
-                            .filter(u -> u.getNome().equalsIgnoreCase(nome) && u.getEmail().equalsIgnoreCase(email1))
-                            .findFirst()
-                            .orElse(null);
-
-                    if (usuarioAtual == null) {
-                        usuarioAtual = new Usuario(nome, email1);
-                        usuarioAtual.aprovar(); // Ativa o usuário diretamente
-                        usuarios.add(usuarioAtual);
-                        plataforma.adicionarUsuario(usuarioAtual);
-                        System.out.println("Usuário criado e autenticado!");
-                    } else {
-                        System.out.println("Usuário autenticado!");
+                case 5:
+                    if (usuarioLogado == null || !usuarioLogado.getEmail().equals("admin@email.com")) {
+                        System.out.println("Acesso negado. Apenas o admin pode gerenciar pendências.");
+                        break;
                     }
-                }
 
-                case 0: {
+                    List<Moderacao> pendencias = plataforma.listarPendenciasDeModeracao();
+                    if(pendencias.isEmpty()){
+                        System.out.println("\nNenhum item pendente de moderação.");
+                        break;
+                    }
+                    
+                    System.out.println("\n--- Itens Pendentes de Moderação ---");
+                    for (int i = 0; i < pendencias.size(); i++) {
+                        Moderacao item = pendencias.get(i);
+                        System.out.print((i + 1) + ". ");
+                        if (item instanceof Usuario) {
+                            System.out.println("Usuário: " + ((Usuario) item).getNome() + " (" + ((Usuario) item).getEmail() + ")");
+                        } else if (item instanceof Avaliacao) {
+                            Avaliacao avaliacao = (Avaliacao) item;
+                            System.out.println("Avaliação do produto '" + avaliacao.getProdutoAvaliado().getNome() + "' por " + avaliacao.getAutor().getNome() + ": \"" + avaliacao.getTexto() + "\"");
+                        }
+                    }
+
+                    System.out.print("\nEscolha um item para moderar (ou 0 para voltar): ");
+                    int itemIndex = Integer.parseInt(teclado.nextLine());
+
+                    if (itemIndex > 0 && itemIndex <= pendencias.size()) {
+                        Moderacao itemSelecionado = pendencias.get(itemIndex - 1);
+                        System.out.print("Aprovar (A) ou Rejeitar (R)? ");
+                        String acao = teclado.nextLine();
+                        if (acao.equalsIgnoreCase("A")) {
+                            itemSelecionado.aprovar();
+                            System.out.println("Item aprovado!");
+                        } else if (acao.equalsIgnoreCase("R")) {
+                            itemSelecionado.rejeitar();
+                            System.out.println("Item rejeitado!");
+                        } else {
+                            System.out.println("Ação inválida.");
+                        }
+                    }
+                    break;
+
+                case 0:
                     System.out.println("Encerrando...");
-                    sc.close();
+                    teclado.close();
                     return;
-                }
 
-                default: System.out.println("Opção inválida!");
+                default:
+                    System.out.println("Opção inválida!");
             }
         }
     }
