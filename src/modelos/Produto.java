@@ -1,9 +1,6 @@
 package modelos;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import enums.StatusAvaliacao;
 
