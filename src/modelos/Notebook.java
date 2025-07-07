@@ -35,6 +35,6 @@ public class Notebook extends Produto {
 
     @Override
     public String exibirDetalhes() {
-        return String.format("Notebook: %s (%s), %s, %.1f\"", nome, marca, processador, tamanhoTela);
+        return String.format("Notebook: %s (%s), %s, %.1f", nome, marca, processador, tamanhoTela);
     }
 }
