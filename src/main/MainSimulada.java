@@ -1,52 +1,63 @@
 package main;
 
 import interfaces.Moderacao;
-import modelos.Celular;
-import modelos.Notebook;
-import modelos.Plataforma;
-import modelos.Usuario;
+import modelos.*;
+import enums.StatusUsuario;
 
-/**
- * Classe principal para demonstrar o funcionamento da plataforma
- */
 public class MainSimulada {
-    
+
     public static void main(String[] args) {
         Plataforma plataforma = new Plataforma();
 
-        // Criar usuários
+        System.out.println("--- Etapa 1: Cadastrando usuários ---");
         Usuario ana = new Usuario("Ana", "ana@email.com");
         Usuario joao = new Usuario("João", "joao@email.com");
 
-        // Aprovar usuários
-        ana.aprovar();
-        joao.aprovar();
-
-        // Adicionar usuários na plataforma
         plataforma.adicionarUsuario(ana);
         plataforma.adicionarUsuario(joao);
+        System.out.println("Usuários 'Ana' e 'João' adicionados. Status inicial: " + ana.getStatus());
 
-        // Criar produtos
+        System.out.println("\n--- Etapa 2: Moderação de novos usuários ---");
+        System.out.println("Itens pendentes antes da moderação de usuários:");
+        plataforma.listarPendenciasDeModeracao().forEach(item -> System.out.println("- " + item.getClass().getSimpleName()));
+
+        System.out.println("\nAprovando usuários...");
+        ana.aprovar();
+        joao.aprovar();
+        System.out.println("Status da 'Ana' após aprovação: " + ana.getStatus());
+        System.out.println("Status do 'João' após aprovação: " + joao.getStatus());
+
+        System.out.println("\n--- Etapa 3: Adicionando produtos à plataforma ---");
         Celular celular = new Celular("Galaxy S22", "Samsung", 8, 128);
-        Notebook notebook = new Notebook("Dell XPS", "Dell", "i7", 15.6);
+        Notebook notebook = new Notebook("Dell XPS", "Dell", "Intel i7", 15.6);
 
-        // Adicionar produtos à plataforma
         plataforma.adicionarProduto(celular);
         plataforma.adicionarProduto(notebook);
 
-        // Usuários avaliam produtos
+        System.out.println("\n--- Etapa 4: Usuários realizam avaliações ---");
         ana.avaliarProduto(celular, 5, "Muito bom!");
         joao.avaliarProduto(celular, 4, "Boa performance.");
         ana.avaliarProduto(notebook, 5, "Máquina excelente.");
+        System.out.println("Avaliações enviadas para moderação.");
 
-        // Aprova avaliações manualmente
-        plataforma.listarPendenciasDeModeracao().forEach(Moderacao::aprovar);
+        System.out.println("\n--- Etapa 5: Moderação das avaliações ---");
+        System.out.println("Nota média do celular (antes de aprovar avaliações): " + celular.calcularNotaMedia());
 
-        // Listar produtos ordenados e notas
-        System.out.println("\nProdutos na plataforma:");
+        System.out.println("\nItens pendentes para moderação (esperado: 3 avaliações):");
+        for (Moderacao pendencia : plataforma.listarPendenciasDeModeracao()) {
+            if (pendencia instanceof Avaliacao) {
+                System.out.println("- Avaliação do produto: " + ((Avaliacao) pendencia).getProdutoAvaliado().getNome());
+                pendencia.aprovar();
+            }
+        }
+        System.out.println("Todas as avaliações pendentes foram aprovadas.");
+
+        System.out.println("\n--- Etapa 6: Resultados Finais ---");
+        System.out.println("Listando produtos ordenados por nome:");
         plataforma.listarProdutosOrdenadosPorNome();
 
-        System.out.println("\nNota média do celular: " + celular.calcularNotaMedia());
-        System.out.println("Nota média do notebook: " + notebook.calcularNotaMedia());
+        System.out.println("\nCalculando notas médias após aprovação:");
+        System.out.println("Nota média do celular: " + String.format("%.2f", celular.calcularNotaMedia()));
+        System.out.println("Nota média do notebook: " + String.format("%.2f", notebook.calcularNotaMedia()));
     }
 }
