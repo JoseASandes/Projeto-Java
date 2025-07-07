@@ -59,7 +59,7 @@ public class Notebook extends Produto {
      */
     public void setTamanhoTela(double tamanhoTela) {
         if (tamanhoTela <= 0) {
-            throw new IllegalArgumentException("O tamanho da tela deve ser maior que 0");
+            System.out.ptintln("O tamanho da tela deve ser maior que 0.");
         }
         this.tamanhoTela = tamanhoTela;
     }
