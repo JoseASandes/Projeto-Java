@@ -93,7 +93,11 @@ public class Avaliacao implements Moderacao, Comparable<Avaliacao> {
      * @param nota the nota to set
      */
     public void setNota(int nota) {
-        this.nota = nota;
+        if (nota <= 0 || nota > 5) {
+            System.out.println("Informe um valor entre 1 e 5.");
+        } else {
+            this.nota = nota;
+        }
     }
 
     /**
