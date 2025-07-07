@@ -1,15 +1,8 @@
 package main;
 
-import modelos.Avaliacao;
-import modelos.Celular;
-import modelos.Notebook;
-import modelos.Plataforma;
-import modelos.Usuario;
-import modelos.Produto;
-
+import modelos.*;
 import interfaces.Moderacao;
 import enums.StatusUsuario;
-
 import java.util.*;
 
 public class MainInterativa {
