@@ -1,6 +1,3 @@
-/**
- * 
- */
 package modelos;
 
 import java.util.ArrayList;
@@ -9,87 +6,46 @@ import java.util.List;
 
 import enums.StatusUsuario;
 import interfaces.Moderacao;
-
-/**
- * 
- */
 public class Usuario implements Moderacao {
     private String nome;
     private String email;
     private StatusUsuario status;
     private List<Avaliacao> avaliacoesFeita = new ArrayList<Avaliacao>();
 
-    /**
-     * @param nome
-     * @param email
-     * @param status
-     * @param avaliacoesFeita
-     */
     public Usuario(String nome, String email) {
         this.nome = nome;
         this.email = email;
         this.status = status.PENDENTE_APROVACAO;
     }
 
-    /**
-     * 
-     */
-    public Usuario() {
-
-    }
-
-    /**
-     * @return the nome
-     */
-    public String getNome1() {
+    public String getNome() {
         return nome;
     }
 
-    /**
-     * @param nome the nome to set
-     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * @param email the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * @return the status
-     */
     public StatusUsuario getStatus() {
         return status;
     }
 
-    /**
-     * @param status the status to set
-     */
     public void setStatus(StatusUsuario status) {
         this.status = status;
     }
 
-    /**
-     * @return the avaliacoesFeita
-     */
-    public List<Avaliacao> getAvaliacoesFeita() {
-        return avaliacoesFeita;
+    public List<Avaliacao> getAvaliacoesFeitas() {
+        return Collections.unmodifiableList(avaliacoesFeita);
     }
 
-    /**
-     * @param avaliacoesFeita the avaliacoesFeita to set
-     */
     public void setAvaliacoesFeita(List<Avaliacao> avaliacoesFeita) {
         this.avaliacoesFeita = avaliacoesFeita;
     }
@@ -110,11 +66,20 @@ public class Usuario implements Moderacao {
         this.status = StatusUsuario.BLOQUEADO;
     }
 
-    public List<Avaliacao> getAvaliacoesFeitas() {
-        return Collections.unmodifiableList(avaliacoesFeita);
-    }
-
-    public String getNome() {
-        return nome;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Usuario other = (Usuario) obj;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+        return true;
     }
 }
