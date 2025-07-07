@@ -2,7 +2,6 @@ package main;
 
 import interfaces.Moderacao;
 import modelos.*;
-import enums.StatusUsuario;
 
 public class MainSimulada {
 
