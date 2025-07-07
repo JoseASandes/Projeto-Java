@@ -33,7 +33,11 @@ public class Plataforma {
     }
 
     public void listarProdutosOrdenadosPorNome() {
-        produtos.stream().sorted().forEach(p -> System.out.println(p.exibirDetalhes()));
+        List<Produto> produtosOrdenados = new ArrayList<>(this.produtos);
+        Collections.sort(produtosOrdenados);
+        for (Produto p : produtosOrdenados) {
+            System.out.println(p.exibirDetalhes());
+        }
     }
 
     public List<Moderacao> listarPendenciasDeModeracao() {
