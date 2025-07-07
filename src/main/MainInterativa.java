@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import interfaces.Moderacao;
-
 public class MainInterativa {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -38,7 +36,7 @@ public class MainInterativa {
             int opcao = Integer.parseInt(sc.nextLine());
 
             switch (opcao) {
-                case 1: {
+                case 1 -> {
                     System.out.print("Tipo (1-Celular, 2-Notebook): ");
                     int tipo = Integer.parseInt(sc.nextLine());
                     System.out.print("Nome: ");
@@ -64,7 +62,7 @@ public class MainInterativa {
                     System.out.println("Produto adicionado com sucesso!");
                 }
 
-                case 2: {
+                case 2 -> {
                     System.out.print("Nome do produto: ");
                     String nomeProduto = sc.nextLine();
                     Produto produto = plataforma.buscarProdutoPorNome(nomeProduto);
@@ -86,17 +84,17 @@ public class MainInterativa {
                     }
                 }
 
-                case 3: {
+                case 3 -> {
                     plataforma.listarProdutosOrdenadosPorNome();
                 }
 
-                case 4: {
-                    List<Moderacao> pendencias = plataforma.listarPendenciasDeModeracao();
+                case 4 -> {
+                    var pendencias = plataforma.listarPendenciasDeModeracao();
                     System.out.println("\nItens pendentes de moderação: " + pendencias.size());
                     pendencias.forEach(p -> System.out.println(p.getClass().getSimpleName()));
                 }
 
-                case 5: {
+                case 5 -> {
                     System.out.print("Nome do usuário: ");
                     String nome1 = sc.nextLine();
                     System.out.print("Email do usuário: ");
@@ -118,13 +116,13 @@ public class MainInterativa {
                     }
                 }
 
-                case 0: {
+                case 0 -> {
                     System.out.println("Encerrando...");
                     sc.close();
                     return;
                 }
 
-                default: System.out.println("Opção inválida!");
+                default -> System.out.println("Opção inválida!");
             }
         }
     }
