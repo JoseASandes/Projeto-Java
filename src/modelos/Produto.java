@@ -38,11 +38,7 @@ public abstract class Produto implements Comparable<Produto> {
     }
 
     public double calcularNotaMedia() {
-        return avaliacoes.stream()
-                .filter(avaliacao -> avaliacao.getStatus() == StatusAvaliacao.APROVADA)
-                .mapToInt(Avaliacao::getNota)
-                .average()
-                .orElse(0);
+        return avaliacoes.stream().filter(avaliacao -> avaliacao.getStatus() == StatusAvaliacao.APROVADA).mapToInt(Avaliacao::getNota).average().orElse(0);
     }
 
     public abstract String exibirDetalhes();
