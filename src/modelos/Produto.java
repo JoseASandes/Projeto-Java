@@ -56,12 +56,12 @@ public abstract class Produto implements Comparable<Produto> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof Produto))
+        if (!(obj instanceof Produto))
             return false;
-        Produto p = (Produto) o;
+        Produto p = (Produto) obj;
         return Objects.equals(nome, p.nome) && Objects.equals(marca, p.marca);
     }
 }
