@@ -45,7 +45,7 @@ public class Celular extends Produto {
      */
     public void setMemoriaRAM(int memoriaRAM) {
         if (memoriaRAM <= 0) {
-            throw new IllegalArgumentException("Memória RAM deve ser maior que 0");
+            System.out.println("Memoria RAM deve ser maior do que 0.")
         }
         this.memoriaRAM = memoriaRAM;
     }
