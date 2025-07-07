@@ -76,7 +76,7 @@ public class Usuario implements Moderacao, Comparable<Usuario> {
             return true;
         if (obj == null || getClass() != obj.getClass())
             return false;
-        Usuario outro = (Usuario) obj;
-        return Objects.equals(email, outro.email);
+        Usuario u = (Usuario) obj;
+        return Objects.equals(email, u.email);
     }
 }
