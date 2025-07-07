@@ -2,6 +2,8 @@ package modelos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import enums.StatusAvaliacao;
 import interfaces.Moderacao;
 
@@ -52,7 +54,7 @@ public class Plataforma {
         }
 
         for (Produto p : produtos) {
-            pendentes.addAll(p.getAvaliacoes().stream().filter(a -> a.getStatus() == StatusAvaliacao.PENDENTE).toList());
+            pendentes.addAll(p.getAvaliacoes().stream().filter(a -> a.getStatus() == StatusAvaliacao.PENDENTE).collect(Collectors.toList()));
         }
 
         return pendentes;

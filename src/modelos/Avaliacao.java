@@ -88,8 +88,9 @@ public class Avaliacao implements Moderacao, Comparable<Avaliacao> {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Avaliacao a))
+        if (!(o instanceof Avaliacao))
             return false;
+        Avaliacao a = (Avaliacao) o;
         return nota == a.nota && Objects.equals(texto, a.texto)
                 && Objects.equals(autor, a.autor)
                 && Objects.equals(produtoAvaliado, a.produtoAvaliado);
