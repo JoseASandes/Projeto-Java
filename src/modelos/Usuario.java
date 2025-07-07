@@ -1,21 +1,20 @@
 package modelos;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import enums.StatusUsuario;
 import interfaces.Moderacao;
-public class Usuario implements Moderacao {
+
+public class Usuario implements Moderacao, Comparable<Usuario> {
     private String nome;
     private String email;
     private StatusUsuario status;
-    private List<Avaliacao> avaliacoesFeita = new ArrayList<Avaliacao>();
+    private List<Avaliacao> avaliacoesFeita = new ArrayList<>();
 
     public Usuario(String nome, String email) {
         this.nome = nome;
         this.email = email;
-        this.status = status.PENDENTE_APROVACAO;
+        this.status = StatusUsuario.PENDENTE_APROVACAO;
     }
 
     public String getNome() {
@@ -67,19 +66,17 @@ public class Usuario implements Moderacao {
     }
 
     @Override
+    public int compareTo(Usuario outro) {
+        return this.email.compareToIgnoreCase(outro.getEmail());
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (obj == null || getClass() != obj.getClass())
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Usuario other = (Usuario) obj;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
-            return false;
-        return true;
+        Usuario outro = (Usuario) obj;
+        return Objects.equals(email, outro.email);
     }
 }
