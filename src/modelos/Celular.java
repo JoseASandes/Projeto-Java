@@ -64,7 +64,7 @@ public class Celular extends Produto {
      */
     public void setArmazenamento(int armazenamento) {
         if (armazenamento <= 0) {
-            throw new IllegalArgumentException("Armazenamento deve ser maior que 0!");
+            System.out.println("Armazenamento deve ser maior que 0!");
         }
         this.armazenamento = armazenamento;
     }
