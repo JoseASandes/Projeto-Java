@@ -38,6 +38,6 @@ public class Celular extends Produto {
 
     @Override
     public String exibirDetalhes() {
-        return String.format("Celular: %s %s, %d, %d\"", nome, marca, memoriaRAM, armazenamento);
+        return String.format("Celular: %s %s, %d, %d", nome, marca, memoriaRAM, armazenamento);
     }
 }
