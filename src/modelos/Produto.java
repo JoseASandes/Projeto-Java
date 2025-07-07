@@ -41,7 +41,12 @@ public abstract class Produto implements Comparable<Produto> {
     }
 
     public void adicionarAvaliacao(Avaliacao avaliacao) {
-        avaliacoes.add(avaliacao);
+        if (!avaliacoes.contains(avaliacao)) {
+            avaliacoes.add(avaliacao);
+        } else {
+            System.out.println("Produto ja avaliado pelo usuario.");
+        }
+        
     }
 
     public double calcularNotaMedia() {
