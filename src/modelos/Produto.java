@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import enums.StatusAvaliacao;
+
 public abstract class Produto implements Comparable<Produto> {
     protected String nome;
     protected String marca;
@@ -22,6 +23,10 @@ public abstract class Produto implements Comparable<Produto> {
     public String getNome() {
         return nome;
     }
+    
+    public String getMarca() {
+        return marca;
+    }
 
     public List<Avaliacao> getAvaliacoes() {
         return Collections.unmodifiableList(avaliacoes);
@@ -33,7 +38,6 @@ public abstract class Produto implements Comparable<Produto> {
         } else {
             System.out.println("Produto ja avaliado pelo usuario.");
         }
-        
     }
 
     public double calcularNotaMedia() {
@@ -44,7 +48,7 @@ public abstract class Produto implements Comparable<Produto> {
                 .orElse(0);
     }
 
-    public abstract String exibirDetalhes(); // toString
+    public abstract String exibirDetalhes();
 
     @Override
     public int compareTo(Produto outro) {
@@ -59,10 +63,5 @@ public abstract class Produto implements Comparable<Produto> {
             return false;
         Produto p = (Produto) o;
         return Objects.equals(nome, p.nome) && Objects.equals(marca, p.marca);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nome, marca);
     }
 }
